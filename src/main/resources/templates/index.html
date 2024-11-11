@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Welcome</title>
+</head>
+<body>
+<h2>Привет! Это Delish Delivery!</h2>
+<p>Здесь пока пусто, можете пока авторизоваться</p>
+<div th:if="${user != null}">
+    <p>Username: <span th:text="${user.username}"></span></p>
+    <p>Name: <span th:text="${user.name}"></span></p>
+    <p>Surname: <span th:text="${user.surname}"></span></p>
+    <p>Email: <span th:text="${user.email}"></span></p>
+    <p>Phone: <span th:text="${user.phone}"></span></p>
+</div>
+<div th:if="${user == null}">
+    <p>Please <a href="/login">login</a> to see your information.</p>
+</div>
+</body>
+</html>
