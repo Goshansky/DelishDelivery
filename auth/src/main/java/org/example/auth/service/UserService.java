@@ -1,38 +1,72 @@
 package org.example.auth.service;
 
-import org.example.auth.model.Role;
-import org.example.auth.model.User;
-import org.example.auth.repository.RoleRepository;
-import org.example.auth.repository.UserRepository;
+import org.example.auth.dtos.RegistrationUserDto;
+import org.example.auth.entities.User;
+import org.example.auth.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class UserService {
-
-    @Autowired
+public class UserService implements UserDetailsService {
     private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
+    private RoleService roleService;
     private PasswordEncoder passwordEncoder;
 
-    public ServiceResult<User> register(User user) {
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-            return new ServiceResult<>(false, "Username already exists");
-        }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Set<Role> roles = new HashSet<>();
-        roles.add(roleRepository.findByName("ROLE_USER"));
-        user.setRoles(roles);
-        userRepository.save(user);
-        return new ServiceResult<>(true, "User registered successfully", user);
+    @Autowired
+    public UserService(@Lazy PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(
+                String.format("Пользователь '%s' не найден", username)
+        ));
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList())
+        );
+    }
+
+    public User createNewUser(RegistrationUserDto registrationUserDto) {
+        User user = new User();
+        user.setUsername(registrationUserDto.getUsername());
+        user.setEmail(registrationUserDto.getEmail());
+        user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
+        user.setRoles(List.of(roleService.getUserRole()));
+        return userRepository.save(user);
+    }
 }
