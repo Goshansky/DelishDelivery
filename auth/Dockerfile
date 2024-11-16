@@ -2,7 +2,7 @@ FROM gradle:jdk17
 
 COPY --chown=gradle:gradle . /app
 WORKDIR /app
-RUN gradle -x build
+RUN ./gradlew build
 
 EXPOSE 8080
 WORKDIR /app

@@ -8,4 +8,8 @@ public class RegistrationUserDto {
     private String password;
     private String confirmPassword;
     private String email;
+    private String phone;
+    private String name;
+    private String surname; // Фамилия
+    private String patronymic; // Отчество
 }
