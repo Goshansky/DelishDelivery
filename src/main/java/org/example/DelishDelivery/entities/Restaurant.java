@@ -1,20 +1,20 @@
 package org.example.DelishDelivery.entities;
 
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-@Entity
-@Table(name = "roles")
 @Getter
 @Setter
-public class Role {
+@Entity
+@Table(name = "restaurants")
+public class Restaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-    private String privilege;
-    private String info;
+    private String address;
+    private String phoneNumber;
+
 }
