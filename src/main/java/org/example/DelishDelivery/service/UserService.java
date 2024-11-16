@@ -1,11 +1,14 @@
 package org.example.DelishDelivery.service;
 
 import org.example.DelishDelivery.dtos.RegistrationUserDto;
+import org.example.DelishDelivery.dtos.UserDto;
 import org.example.DelishDelivery.entities.User;
 import org.example.DelishDelivery.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -66,7 +70,25 @@ public class UserService implements UserDetailsService {
         user.setUsername(registrationUserDto.getUsername());
         user.setEmail(registrationUserDto.getEmail());
         user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
+        user.setPhone(registrationUserDto.getPhone());
+        user.setName(registrationUserDto.getName());
+        user.setPatronymic(registrationUserDto.getPatronymic());
+        user.setSurname(registrationUserDto.getSurname());
         user.setRoles(List.of(roleService.getUserRole()));
         return userRepository.save(user);
+    }
+
+    public UserDto getUserInfo(Principal principal) {
+        Optional<User> user = userRepository.findByUsername(principal.getName());
+        UserDto userDto = new UserDto();
+        userDto.setUsername(user.get().getUsername());
+        userDto.setName(user.get().getName());
+        userDto.setSurname(user.get().getSurname());
+        userDto.setPatronymic(user.get().getPatronymic());
+        userDto.setEmail(user.get().getEmail());
+        userDto.setPhone(user.get().getPhone());
+        userDto.setId(user.get().getId());
+
+        return userDto;
     }
 }
