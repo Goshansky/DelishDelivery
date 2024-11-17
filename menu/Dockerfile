@@ -4,8 +4,8 @@ COPY --chown=gradle:gradle . /app
 WORKDIR /app
 #RUN ./gradlew build
 
-EXPOSE 8081
+EXPOSE 8082
 WORKDIR /app
 
-CMD java -jar ./build/libs/restaurant-0.0.1-SNAPSHOT.jar
+CMD java -jar ./build/libs/menu-0.0.1-SNAPSHOT.jar
 

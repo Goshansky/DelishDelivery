@@ -42,6 +42,21 @@ services:
       - SPRING_DATASOURCE_PASSWORD=postgres
     depends_on:
       - postgres
+
+  menu:
+    build:
+      context: ./menu
+      dockerfile: Dockerfile
+    container_name: menu-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=production
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/database
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - postgres
 #  nginx:
 #    build:
 #      context: .
