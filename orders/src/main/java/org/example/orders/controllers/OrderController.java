@@ -1,6 +1,7 @@
 package org.example.orders.controllers;
 
 import org.example.orders.dto.OrderRequest;
+import org.example.orders.dto.OrderStatusRequest;
 import org.example.orders.entities.Order;
 import org.example.orders.entities.OrderItem;
 import org.example.orders.services.OrderService;
@@ -40,5 +41,10 @@ public class OrderController {
 
         order.setOrderItems(orderItems);
         return orderService.createOrder(order);
+    }
+
+    @PutMapping("/{orderId}/status")
+    public Order updateOrderStatus(@PathVariable Long orderId, @RequestBody OrderStatusRequest statusRequest) {
+        return orderService.updateOrderStatus(orderId, statusRequest.getStatus());
     }
 }
