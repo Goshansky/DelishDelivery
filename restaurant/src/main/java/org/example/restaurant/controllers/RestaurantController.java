@@ -1,6 +1,7 @@
 package org.example.restaurant.controllers;
 
 import org.example.restaurant.entities.Restaurant;
+import org.example.restaurant.entities.RestaurantDTO;
 import org.example.restaurant.services.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +18,12 @@ public class RestaurantController {
     private RestaurantService restaurantService;
 
     @GetMapping
-    public List<Restaurant> getAllRestaurants() {
+    public List<RestaurantDTO> getAllRestaurants() {
         return restaurantService.getAllRestaurants();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Restaurant> getRestaurantById(@PathVariable Long id) {
+    public ResponseEntity<RestaurantDTO> getRestaurantById(@PathVariable Long id) {
         return restaurantService.getRestaurantById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

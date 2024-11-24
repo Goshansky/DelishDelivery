@@ -1,5 +1,6 @@
 package org.example.orders.controllers;
 
+import org.example.orders.dto.OrderDTO;
 import org.example.orders.dto.OrderRequest;
 import org.example.orders.dto.OrderStatusRequest;
 import org.example.orders.entities.Order;
@@ -20,12 +21,12 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping
-    public List<Order> getAllOrders() {
+    public List<OrderDTO> getAllOrders() {
         return orderService.getAllOrders();
     }
 
     @PostMapping
-    public Order createOrder(@RequestBody OrderRequest orderRequest) {
+    public OrderDTO createOrder(@RequestBody OrderRequest orderRequest) {
         Order order = new Order();
         order.setUserId(orderRequest.getUserId());
         order.setDeliveryAddress(orderRequest.getDeliveryAddress());
@@ -44,7 +45,7 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}/status")
-    public Order updateOrderStatus(@PathVariable Long orderId, @RequestBody OrderStatusRequest statusRequest) {
+    public OrderDTO updateOrderStatus(@PathVariable Long orderId, @RequestBody OrderStatusRequest statusRequest) {
         return orderService.updateOrderStatus(orderId, statusRequest.getStatus());
     }
 }

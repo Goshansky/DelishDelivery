@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Service
 public class DeliveryService {
 
@@ -19,6 +21,9 @@ public class DeliveryService {
     @Autowired
     private RestTemplate restTemplate;
 
+    public List<Delivery> getAllDeliveries() {
+        return deliveryRepository.findAll();
+    }
 
     public void createDelivery(DeliveryRequest deliveryRequest) {
         Delivery delivery = new Delivery();
@@ -27,14 +32,13 @@ public class DeliveryService {
         deliveryRepository.save(delivery);
     }
 
-
     public Delivery updateDeliveryStatus(Long deliveryId, String status) {
         Delivery delivery = deliveryRepository.findById(deliveryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Delivery not found"));
         delivery.setStatus(status);
 
         // Вызов микросервиса заказов для обновления статуса заказа
-        if (status.equals("DELIVERE")) {
+        if (status.equals("DELIVERY")) {
             OrderStatusRequest statusRequest = new OrderStatusRequest();
             statusRequest.setStatus(OrderStatus.PROCESSING);
             restTemplate.put("http://localhost:8083/api/orders/" + delivery.getOrderId() + "/status", statusRequest);

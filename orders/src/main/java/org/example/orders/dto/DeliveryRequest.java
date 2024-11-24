@@ -1,4 +1,4 @@
-package org.example.orders.entities;
+package org.example.orders.dto;
 
 import lombok.Getter;
 import lombok.Setter;
