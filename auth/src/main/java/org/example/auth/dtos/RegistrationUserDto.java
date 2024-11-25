@@ -12,4 +12,5 @@ public class RegistrationUserDto {
     private String name;
     private String surname; // Фамилия
     private String patronymic; // Отчество
+    private String address;
 }

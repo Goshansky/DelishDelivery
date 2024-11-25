@@ -17,6 +17,7 @@ public class Order {
     private Long id;
     private Long userId;
     private String deliveryAddress;
+    private String restaurantAddress; // Новое поле для адреса ресторана
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.CREATED; // Поле статуса с значением по умолчанию

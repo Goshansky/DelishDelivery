@@ -73,6 +73,7 @@ public class UserService implements UserDetailsService {
         user.setPatronymic(registrationUserDto.getPatronymic());
         user.setSurname(registrationUserDto.getSurname());
         user.setRoles(List.of(roleService.getUserRole()));
+        user.setAddress(registrationUserDto.getAddress());
         return userRepository.save(user);
     }
 
@@ -86,6 +87,8 @@ public class UserService implements UserDetailsService {
         userDto.setEmail(user.get().getEmail());
         userDto.setPhone(user.get().getPhone());
         userDto.setId(user.get().getId());
+        userDto.setRoles(user.get().getRoles());
+        userDto.setAddress(user.get().getAddress());
 
         return userDto;
     }

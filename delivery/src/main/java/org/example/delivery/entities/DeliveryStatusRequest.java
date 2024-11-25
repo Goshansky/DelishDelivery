@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class DeliveryStatusRequest {
     private String status;
+    private Long deliverer_id;
 }

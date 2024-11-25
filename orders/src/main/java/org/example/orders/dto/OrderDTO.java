@@ -12,6 +12,7 @@ public class OrderDTO {
     private Long id;
     private Long userId;
     private String deliveryAddress;
+    private String restaurantAddress; // Новое поле для адреса ресторана
     private OrderStatus status;
     private List<OrderItemDTO> items;
     private double totalPrice;

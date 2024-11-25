@@ -23,6 +23,13 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class OrderService {
 
@@ -34,6 +41,12 @@ public class OrderService {
 
     public List<OrderDTO> getAllOrders() {
         return orderRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<OrderDTO> getOrdersByUserId(Long userId) {
+        return orderRepository.findByUserId(userId).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
@@ -66,6 +79,7 @@ public class OrderService {
         dto.setId(order.getId());
         dto.setUserId(order.getUserId());
         dto.setDeliveryAddress(order.getDeliveryAddress());
+        dto.setRestaurantAddress(order.getRestaurantAddress()); // Новое поле для адреса ресторана
         dto.setStatus(order.getStatus());
 
         List<OrderItemDTO> orderItems = order.getOrderItems().stream()
@@ -91,5 +105,6 @@ public class OrderService {
         return dto;
     }
 }
+
 
 

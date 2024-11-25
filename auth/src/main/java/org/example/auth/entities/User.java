@@ -24,6 +24,8 @@ public class User{
     private String surname; // Фамилия
     private String patronymic; // Отчество
 
+    private String address;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",

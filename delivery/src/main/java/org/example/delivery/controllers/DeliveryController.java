@@ -32,6 +32,6 @@ public class DeliveryController {
 
     @PutMapping("/{deliveryId}/status")
     public Delivery updateDeliveryStatus(@PathVariable Long deliveryId, @RequestBody DeliveryStatusRequest statusRequest) {
-        return deliveryService.updateDeliveryStatus(deliveryId, statusRequest.getStatus());
+        return deliveryService.updateDeliveryStatus(deliveryId, statusRequest);
     }
 }
