@@ -18,17 +18,6 @@ public class DeliveryService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<Delivery> getAllDeliveries() {
-        return deliveryRepository.findAll();
-    }
-
-    public void createDelivery(DeliveryRequest deliveryRequest) {
-        Delivery delivery = new Delivery();
-        delivery.setOrderId(deliveryRequest.getOrderId());
-        delivery.setStatus(deliveryRequest.getStatus());
-        deliveryRepository.save(delivery);
-    }
-
     public Delivery updateDeliveryStatus(Long deliveryId, DeliveryStatusRequest statusRequest) {
         Delivery delivery = deliveryRepository.findById(deliveryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Delivery not found"));
@@ -48,5 +37,16 @@ public class DeliveryService {
         }
 
         return deliveryRepository.save(delivery);
+    }
+
+    public List<Delivery> getAllDeliveries() {
+        return deliveryRepository.findAll();
+    }
+
+    public void createDelivery(DeliveryRequest deliveryRequest) {
+        Delivery delivery = new Delivery();
+        delivery.setOrderId(deliveryRequest.getOrderId());
+        delivery.setStatus(deliveryRequest.getStatus());
+        deliveryRepository.save(delivery);
     }
 }

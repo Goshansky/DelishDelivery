@@ -10,7 +10,7 @@ import java.util.List;
 public class OrderRequest {
     private Long userId;
     private String deliveryAddress;
-    private String restaurantAddress; // Новое поле для адреса ресторана
+    private String restaurantAddress;
     private List<OrderItemRequest> items;
 
 }

@@ -72,15 +72,21 @@ services:
       - SPRING_DATASOURCE_PASSWORD=postgres
     depends_on:
       - postgres
-#  nginx:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    container_name: nginx
-#    ports:
-#      - "80:80"
-#    depends_on:
-#      - auth-service
+
+  delivery:
+    build:
+      context: ./delivery
+      dockerfile: Dockerfile
+    container_name: delivery-service
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=production
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/database
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - postgres
 
 volumes:
   postgres_data:
